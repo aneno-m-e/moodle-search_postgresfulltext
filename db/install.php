@@ -42,4 +42,10 @@ function xmldb_search_postgresfulltext_install() {
     $DB->execute("CREATE INDEX {search_postgresfulltext_file_index}
                  ON {search_postgresfulltext_file} USING GIN (fulltextindex)");
 
+    $DB->execute("CREATE EXTENSION unaccent");
+
+    $DB->execute("CREATE TEXT SEARCH CONFIGURATION en ( COPY = english)");
+
+    $DB->execute("ALTER TEXT SEARCH CONFIGURATION en
+                ALTER MAPPING FOR hword, hword_part, word WITH unaccent, english_stem");
 }
